@@ -1,0 +1,53 @@
+>> composer create-project laravel/laravel quickstart --prefer-dist
+
+>> cd quickstart
+
+>> php artisan make:migration create_tasks_table --create=tasks
+
+>> php artisan migrate
+	(Prob)
+	[Illuminate\Database\QueryException]
+	SQLSTATE[HY000] [1045] Access denied for user 'homestead'@'localhost' (using password: YES) (SQL: select * from information_schema.tables where table_schema = homestead and table_name = migrations)
+
+	[PDOException]
+	SQLSTATE[HY000] [1045] Access denied for user 'homestead'@'localhost' (using password: YES)
+
+	(Sol)
+	Edit .env file in root dir after adding a new database in mysql.
+
+	[In MySql]
+	>> mysql -u root -p
+	password: root
+	>> create database laravel_todo_list;
+	>> use laravel_todo_list;
+
+>> php artisan migrate
+	(prob)
+	Migration table created successfully.
+	  [Illuminate\Database\QueryException]
+	  SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 767 bytes (SQL: alter table `users` add unique `users_email_unique`(`email`))
+
+	  [PDOException]
+	  SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 767 bytes
+	  
+	(sol)
+	Edit AppServiceProvider.php with,
+
+	use Illuminate\Support\Facades\Schema;
+	public function boot()
+	{
+		Schema::defaultStringLength(191);
+	}
+	
+>> php artisan migrate
+	(prob)
+	[Illuminate\Database\QueryException]
+	SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'users' already exists (SQL: create table `users` (`id` int unsigned not null auto_increment primary key, `name` varchar(191) not null, `email` varchar(191) not null, `password` varchar(191) not null, `remember_token` varchar(100) null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate utf8mb4_unicode_ci)
+
+	[PDOException]
+	SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'users' already exists
+
+	(sol)
+	- php artisan migrate:rollback --step=1 (but reports nothing to rollback)
+	- php artisan migrate:fresh (dropped all tables and re-created all)
+
