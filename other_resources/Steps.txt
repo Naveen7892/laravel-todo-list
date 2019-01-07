@@ -1,3 +1,6 @@
+How to run Laravel PHP
+https://gist.github.com/hootlex/da59b91c628a6688ceb1
+==========================
 >> composer create-project laravel/laravel quickstart --prefer-dist
 
 >> cd quickstart
@@ -50,4 +53,21 @@
 	(sol)
 	- php artisan migrate:rollback --step=1 (but reports nothing to rollback)
 	- php artisan migrate:fresh (dropped all tables and re-created all)
+
+- Initialized git
+		>> git init
+		>> git add .
+		>> git config --local user.email "..."
+		>> git config --local user.name "..."
+		>> git commit -m "..."
+
+>> php artisan make:model Task
+
+(Add Eloquent model Task, Define Routes, Views with common layout and errors.)
+
+>> php artisan serve
+Laravel development server started: <http://127.0.0.1:8000>
+
+(prob)
+Expected app is not opened
 
